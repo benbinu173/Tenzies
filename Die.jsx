@@ -1,30 +1,27 @@
 import React from 'react'
 
-function Die(props) {
-
-    
-     /**
- * Challenge: Add conditional styling to the Die component
- * so that if it's held (isHeld === true), its background color
- * changes to a light green (#59E391)
- * 
- * Remember: currently the Die component has no way of knowing
- * if it's "held" or not.(check app.jsx line number 105 )
- */
-
-  return (
-    <div>
-      <div>
-        <button
-          aria-pressed={props.isHeld}
-            aria-label={`Die with value ${props.value}, 
-            ${props.isHeld ? "held" : "not held"}`}
-        onClick={()=> props.hold(props.id)} style={{backgroundColor:props.isHeld ? "#59E391" : "white"}}> 
-            {props.value}
-        </button>
-      </div>
-    </div>
-  )
+const PIP_LAYOUTS = {
+    1: ["mm"],
+    2: ["tl", "br"],
+    3: ["tl", "mm", "br"],
+    4: ["tl", "tr", "bl", "br"],
+    5: ["tl", "tr", "mm", "bl", "br"],
+    6: ["tl", "ml", "bl", "tr", "mr", "br"],
 }
 
-export default Die
+export default function Die(props) {
+    return (
+        <button
+            className={`die-face ${props.isHeld ? "die-face--held" : ""}`}
+            onClick={() => props.hold(props.id)}
+            aria-pressed={props.isHeld}
+            aria-label={`Die showing ${props.value}, ${props.isHeld ? "held" : "not held"}`}
+        >
+            <span className="die-pips">
+                {PIP_LAYOUTS[props.value].map((pos, i) => (
+                    <span key={i} className={`pip pip--${pos}`} />
+                ))}
+            </span>
+        </button>
+    )
+}
